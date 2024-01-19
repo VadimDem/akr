@@ -23,7 +23,7 @@ namespace WeatherProject
             var iconCode = weather?.Weather?.First().Icon?.ToString();
             var iconUrl = $"http://openweathermap.org/img/w/{iconCode}.png";
             Icon.ImageLocation = iconUrl;
-
+\\        public string ImageLocation
             switch (weather?.Weather?.First()?.Main)
             {
                 case "Rain":
