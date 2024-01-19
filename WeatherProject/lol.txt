@@ -16,7 +16,7 @@ namespace WeatherProject
         {
             var weather = await weatherController.GetWeather(textBox.Text);
             TempLabel.Text = weather?.Main?.Temperature.ToString() + "°C";
-            PressureLabel.Text = (weather?.Main?.Pressure * 0.750062)?.ToString("F2") + " ìì. ðò.ñò.";
+            PressureLabel.Text = (weather?.Main?.Pressure * 0.750062)?.ToString("F2") + " мм рт.ст.";
             HumidityLabel.Text = weather?.Main?.Humidity.ToString() + "%";
             WeatherLabel.Text = weather?.Weather?.First().Description?.ToString();
 
@@ -27,19 +27,19 @@ namespace WeatherProject
             switch (weather?.Weather?.First()?.Main)
             {
                 case "Rain":
-                    RecLabel.Text = "Ðåêîìåíäóåòñÿ âçÿòü çîíò";
+                    RecLabel.Text = "Рекомендуется взять зонт";
                     break;
                 case "Snow":
-                    RecLabel.Text = "Ðåêîìåíäóåòñÿ íàäåòü òåïëóþ îäåæäó";
+                    RecLabel.Text = "Рекомендуется надеть теплую одежду";
                     break;
                 case "Wind":
-                    RecLabel.Text = "Ðåêîìåíäóåòñÿ îäåòüñÿ ïîòåïëåå\nè äåðæàòüñÿ ïîäàëüøå îò îòêðûòûõ ïðîñòðàíñòâ.";
+                    RecLabel.Text = "Рекомендуется одеться потеплее\nи держаться подальше от открытых пространств.";
                     break;
                 case "Clouds":
-                    RecLabel.Text = "Ðåêîìåíäóåòñÿ ïðèãîòîâèòüñÿ ê ïåðåìåí÷èâîé ïîãîäå.";
+                    RecLabel.Text = "Рекомендуется приготовиться к переменчивой погоде.";
                     break;
                 case "Clear":
-                    RecLabel.Text = "Íàñëàæäàéòåñü ñîëíöåì";
+                    RecLabel.Text = "Наслаждайтесь солнцем";
                     break;
             }
 
@@ -47,10 +47,10 @@ namespace WeatherProject
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult res = MessageBox.Show("Óâåðåíû, ÷òî õîòèòå çàêðûòü ïðîãðàììó?", "", MessageBoxButtons.YesNo);
+            DialogResult res = MessageBox.Show("Уверены, что хотите закрыть программу?", "", MessageBoxButtons.YesNo);
             if (res == DialogResult.Yes)
             {
-                res = MessageBox.Show("Õîòèòå ñîõðàíèòü ôàéë?", "", MessageBoxButtons.YesNo);
+                res = MessageBox.Show("Хотите сохранить файл?", "", MessageBoxButtons.YesNo);
                 if (res == DialogResult.Yes)
                 {
                     string txt = String.Join("\n", TempLabel.Text, PressureLabel.Text, HumidityLabel.Text, WeatherLabel.Text);
