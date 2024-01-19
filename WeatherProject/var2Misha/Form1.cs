@@ -1,0 +1,66 @@
+using System.Reflection.Metadata;
+using System.Windows.Forms;
+using WeatherProject.Models;
+
+namespace WeatherProject
+{
+    public partial class Form1 : Form
+    {
+        WeatherController weatherController = new WeatherController();
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            var weather = await weatherController.GetWeather(textBox.Text);
+            TempLabel.Text = weather?.Main?.Temperature.ToString() + "°C";
+            PressureLabel.Text = (weather?.Main?.Pressure * 0.750062)?.ToString("F2") + " мм. рт.ст.";
+            HumidityLabel.Text = weather?.Main?.Humidity.ToString() + "%";
+            WeatherLabel.Text = weather?.Weather?.First().Description?.ToString();
+
+            var iconCode = weather?.Weather?.First().Icon?.ToString();
+            var iconUrl = $"http://openweathermap.org/img/w/{iconCode}.png";
+            Icon.ImageLocation = iconUrl;
+
+            switch (weather?.Weather?.First()?.Main)
+            {
+                case "Rain":
+                    RecLabel.Text = "Рекомендуется взять зонт";
+                    break;
+                case "Snow":
+                    RecLabel.Text = "Рекомендуется надеть теплую одежду";
+                    break;
+                case "Wind":
+                    RecLabel.Text = "Рекомендуется одеться потеплее\nи держаться подальше от открытых пространств.";
+                    break;
+                case "Clouds":
+                    RecLabel.Text = "Рекомендуется приготовиться к переменчивой погоде.";
+                    break;
+                case "Clear":
+                    RecLabel.Text = "Наслаждайтесь солнцем";
+                    break;
+            }
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Уверены, что хотите закрыть программу?", "", MessageBoxButtons.YesNo);
+            if (res == DialogResult.Yes)
+            {
+                res = MessageBox.Show("Хотите сохранить файл?", "", MessageBoxButtons.YesNo);
+                if (res == DialogResult.Yes)
+                {
+                    string txt = String.Join("\n", TempLabel.Text, PressureLabel.Text, HumidityLabel.Text, WeatherLabel.Text);
+                    File.WriteAllText(Environment.CurrentDirectory + "/data.txt", txt);
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+    }
+}
